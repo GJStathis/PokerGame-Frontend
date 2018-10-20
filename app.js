@@ -26,10 +26,30 @@
 var buffer = new Uint8Array([0,255,0,4,5]).buffer;
 
 var exampleSocket = new WebSocket("ws://10.254.186.218:9000/");
-
+/*
 
 
 exampleSocket.onopen = function(event) {
   console.log("Connection opened");
   exampleSocket.send(buffer);
-};
+};*/
+
+
+
+function SendString(str){
+  exampleSocket.send(str);
+}
+
+function GetBaseJsonPacket(type, payload=null){
+  var jsonPacket =  {"PacketID":type,"UserID":payload}
+  return jsonPacket;
+}
+
+function AddBetAmount(jsonPacket, bet){
+  jsonPacket["BetAmount"] = bet;
+  return jsonPacket;
+}
+
+$("#loginButton").click(function() {
+  SendString(JSON.stringify(GetBaseJsonPacket(0,1234)));
+});
