@@ -1,0 +1,43 @@
+body {
+  background-color: #FA1919;
+}
+
+#splash-box {
+  background-color: #FFFFFF;
+  margin: 30px;
+  overflow: auto;
+  height: auto;
+  width: auto;
+}
+
+#loginButton {
+    background-color: #7A6161;
+    width: 175px;
+    height:75px;
+    margin: auto;
+    padding-top: 20px;
+    border-radius: 20px;
+    font-size: 20px;
+}
+
+#splash {
+  font-size: 5.5em;
+  font-family: Courier, Arial;
+  padding-bottom: 3em;
+}
+
+#splash-items {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%) };
+}
+
+#button-text {
+    position: relative;
+    top: 45%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%) };
+}

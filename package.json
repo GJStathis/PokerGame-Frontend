@@ -1,0 +1,12 @@
+{
+  "name": "PokerFrontend",
+  "version": "0.0.1",
+  "description": "Poker hackathon app frontend",
+  "dependencies": {
+    "bootstrap": "^4.1.3",
+    "jquery": "latest",
+    "popper.js": "^1.14.4",
+    "socket.io": "latest"
+  },
+  "author": "Gregory Stathis"
+}
