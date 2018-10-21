@@ -1,17 +1,15 @@
+
+var uid = -1;
+    var turnFlag = true;
 var start = function () {
     var playercard1 = document.getElementById('card1');
     var playercard2 = document.getElementById('card2');
-    var dealercard1 = document.getElementById('dcard1');
-    var dealercard2 = document.getElementById('dcard2');
-    var dealercard3 = document.getElementById('dcard3');
-    var dealercard4 = document.getElementById('dcard4');
-    var dealercard5 = document.getElementById('dcard5');
+    var dealercards = document.getElementById('dealerarea');
     var wsImpl = window.WebSocket || window.MozWebSocket;
     var playerchipfield = document.getElementById('totalplayerchips');
     var input = document.getElementById('sendText');
     var enc = new TextEncoder(); // always utf-8
 
-    var uid = -1;
     var activePlayer;
 
     console.log("connecting to server ...");
@@ -31,11 +29,6 @@ var start = function () {
       uid = json['UserId'];
       break;
       case 1: // Initial board
-      console.log('There are ' + json['NumPlayers'] + ' other players.');
-      console.log('You have ' + json['InitialChips'] + ' chips.');
-      console.log('Your hand is ' + (json['Rank1'])
-      + (json['Suit1'].toUpperCase()) + ' ' + (json['Rank2'])
-      + (json['Suit2']));
 
       playercard1.src = "card-assets/" + (json['Rank1']) + (json['Suit1'].toUpperCase()) + ".png";
       playercard2.src = "card-assets/" + (json['Rank2']) + (json['Suit2'].toUpperCase()) + ".png";
@@ -47,12 +40,22 @@ var start = function () {
       var suits = json['Suits'];
       if (ranks.length != suits.length)
         console.error('didn\'t receive equal ranks and suits.');
-
-      console.log('Board');
-      for (var i = 0; i < ranks.length; i++)
-        console.log(ranks[i] + suits[i]);
+        for(var i=0; i<ranks.length; i++){
+          let image = document.createElement('img');
+          image.src = "card-assets/" + (ranks[i] + suits[i].toUpperCase())+ ".png";
+          image.className = "dealercard";
+          dealerarea.appendChild(image);
+        }
+        /*
+      dealercard1.src = "card-assets/" + (ranks[0] + suits[0].toUpperCase())+ ".png";
+      dealercard2.src = "card-assets/" + (ranks[1] + suits[1].toUpperCase())+ ".png";
+      dealercard3.src = "card-assets/" + (ranks[2] + suits[2].toUpperCase())+ ".png";*/
       break;
       case 3: // Add new card
+      let image = document.createElement('img');
+      image.src = "card-assets/" + (json['Rank'] + json['Suit'].toUpperCase())+ ".png";
+      image.className = "dealercard";
+      dealerarea.appendChild(image);
       console.log(json['Rank'] + json['Suit']);
       break;
       case 4: // Mark active player
@@ -66,6 +69,12 @@ var start = function () {
         activePlayer = false;
         console.log('You are no longer the active player');
       }
+      break;
+      case 6:
+        if(uid == json['WinnerIds'])
+          alert("you won");
+        else
+          alert(json['WinnerIds']+" won");
       break;
     }
         };
@@ -81,26 +90,24 @@ var start = function () {
 
         // allows player to login to the server
         $("#logintest").click(function() {
-          SendString(JSON.stringify(GetBaseJsonPacket(0,-1)));
+          SendString(JSON.stringify(GetBaseJsonPacket(0,uid)));
         });
 
         $("#checkButton").click(function(){
-          SendString(JSON.stringify(GARJsonPacket(2,0));
+          SendString(JSON.stringify(GetBaseJsonPacket(2,uid)));
         });
 
         $("#foldButton").click(function(){
-          SendString(JSON.stringify(GARJsonPacket(2,1);
+          SendString(JSON.stringify(GetBaseJsonPacket(2,uid)));
         });
 
         $("#bidButton").click(function() {
-          var bid = document.getElementById('#bidAmount').value;
+          var bid = document.getElementById('bidAmount').value;
           checkBid(bid);
         });
-
-
 }
 
-}
+
 
     function GetBaseJsonPacket(type, payload=null){
       var jsonPacket =  {"PacketId":type,"UserId":payload}
@@ -108,17 +115,13 @@ var start = function () {
     }
 
     function GARAndBetJsonPacket(type, action, payload=uid){
-      var jsonPacket = {"PacketId": type, "Action":action, "UserId":payload};
+      var jsonPacket = {"PacketId": type, "BidAmount":action, "UserId":payload};
       return jsonPacket;
     }
 
 
     function checkBid(bidamnt){
-      if (Number.isInteger(bidamnt) && bidamnt > 0){
-        SendString(JSON.stringify(GARAndBetJsonPacket(1,bidamnt));
-      } else {
-        alert("Poorly placed bet !")
-      }
+        SendString(JSON.stringify(GARAndBetJsonPacket(1,bidamnt)));
     }
 
     function SendString(str){
