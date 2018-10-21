@@ -1,0 +1,41 @@
+body {
+  background: #0c6606;
+}
+
+#playerarea {
+  position: fixed;
+  left:39%;
+  bottom: 0px;
+  height: 200px;
+  width: auto;
+  background: #A23A23;
+}
+
+#playerchips {
+  position: absolute;
+  bottom: 0px;
+  height: 25px;
+  width: 100%;
+  background: #FFFFFF;
+}
+
+#playercards {
+  height: 89%;
+  width: 100%;
+  background: #24278931;
+}
+
+.playercard {
+  max-height: 70%;
+  max-width: auto;
+}
+
+#playercontrol {
+  background: #773e35;
+  margin: 15px;
+  padding: 10px;
+  border: 1px solid black;
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+}

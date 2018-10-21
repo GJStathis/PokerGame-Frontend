@@ -1,41 +1,100 @@
-var uid = -1;
-var start = function (){
+var start = function () {
+    var playercard1 = document.getElementById('card1');
+    var playercard2 = document.getElementById('card2');
     var wsImpl = window.WebSocket || window.MozWebSocket;
+    var playerchipfield = document.getElementById('totalplayerchips');
+    var input = document.getElementById('sendText');
     var enc = new TextEncoder(); // always utf-8
 
+    var uid = -1;
+    var activePlayer;
+
+    console.log("connecting to server ...");
     // create a new websocket and connect
     window.ws = new wsImpl('ws://10.254.186.218:9000/');
+
     // when data is comming from the server, this metod is called
     ws.onmessage = function (evt) {
-      var json = JSON.parse(evt.data);
-      var packetId = json['PacketId'];
-      //inc.innerHTML += 'Received packet ID ' + packetId + '<br\>';
-      switch (packetId)
+    var json = JSON.parse(evt.data);
+    var packetId = json['PacketId'];
+    console.log('Received packet ID ' + packetId);
+    switch (packetId)
+    {
+      case 0: // Log in
+      console.log('Your UID is ' + json['UserId'] +
+      ', login status code is ' + json['LoginStatus']);
+      uid = json['UserId'];
+      break;
+      case 1: // Initial board
+      console.log('There are ' + json['NumPlayers'] + ' other players.');
+      console.log('You have ' + json['InitialChips'] + ' chips.');
+      console.log('Your hand is ' + (json['Rank1'])
+      + (json['Suit1'].toUpperCase()) + ' ' + (json['Rank2'])
+      + (json['Suit2']));
+
+      playercard1.src = "card-assets/" + (json['Rank1']) + (json['Suit1'].toUpperCase()) + ".png";
+      playercard2.src = "card-assets/" + (json['Rank2']) + (json['Suit2'].toUpperCase()) + ".png";
+      playerchipfield.innerHTML = json['InitialChips'];
+
+      break;
+      case 2: // Show the flop
+      var ranks = json['Ranks'];
+      var suits = json['Suits'];
+      if (ranks.length != suits.length)
+        console.error('didn\'t receive equal ranks and suits.');
+
+      console.log('Board');
+      for (var i = 0; i < ranks.length; i++)
+        console.log(ranks[i] + suits[i]);
+      break;
+      case 3: // Add new card
+      console.log(json['Rank'] + json['Suit']);
+      break;
+      case 4: // Mark active player
+      if (json['UserId'] === uid)
       {
-        case 0:
-          uid = json['UserId'];
-          console.log('UserID = ' + uid);
-        break;
-        case 1:
-          //display two cards, num players and numer of chips
-        //inc.innerHTML += 'There are ' + json['NumPlayers'] + ' other players.<br/>';
-        //inc.innerHTML += 'You have ' + json['InitialChips'] + ' chips.<br/>';
-        //inc.innerHTML += 'Your hand is ' + (json['Rank1'])
-        //+ (json['Suit1']) + ' ' + (json['Rank2'])
-        //+ (json['Suit2']) + '<br/>';
-        break;
-        case 2:
-          //display flow
-        break;
+        activePlayer = json['IsActive'];
+        console.log('You became the active player');
       }
-    };
-    // when the connection is established, this method is called
-    ws.onopen = function () {
-      SendString(JSON.stringify(GetBaseJsonPacket(0,uid)));
-    };
-    // when the connection is closed, this method is called
-    ws.onclose = function () {
+      else
+      {
+        activePlayer = false;
+        console.log('You are no longer the active player');
+      }
+      break;
     }
+        };
+
+        // when the connection is established, this method is called
+        ws.onopen = function () {
+            console.log("connection is opened");
+        };
+        // when the connection is closed, this method is called
+        ws.onclose = function () {
+            console.log("connection is closed");
+        }
+
+        // allows player to login to the server
+        $("#logintest").click(function() {
+          SendString(JSON.stringify(GetBaseJsonPacket(0,-1)));
+        });
+
+        $("#checkButton").click(function(){
+          SendString(JSON.stringify(GARJsonPacket(2,0));
+        });
+
+        $("#foldButton").click(function(){
+          SendString(JSON.stringify(GARJsonPacket(2,1);
+        });
+
+        $("#bidButton").click(function() {
+          var bid = document.getElementById('#bidAmount').value;
+          checkBid(bid);
+        });
+
+
+}
+
 }
 
     function GetBaseJsonPacket(type, payload=null){
@@ -43,25 +102,22 @@ var start = function (){
       return jsonPacket;
     }
 
-    function AddBetAmount(jsonPacket, bet){
-      jsonPacket["BetAmount"] = bet;
+    function GARAndBetJsonPacket(type, action, payload=uid){
+      var jsonPacket = {"PacketId": type, "Action":action, "UserId":payload};
       return jsonPacket;
     }
 
-    function Fold() {
-      SendString(JSON.stringify(GetBaseJsonPacket(3,uid)));
-    }
 
-    function Bid() {
-      var input = document.getElementById('bidAmount');
-      SendString(JSON.stringify(AddBetAmount(GetBaseJsonPacket(1,uid)),input));
-    };
+    function checkBid(bidamnt){
+      if (Number.isInteger(bidamnt) && bidamnt > 0){
+        SendString(JSON.stringify(GARAndBetJsonPacket(1,bidamnt));
+      } else {
+        alert("Poorly placed bet !")
+      }
+    }
 
     function SendString(str){
       ws.send(str);
     }
 
-    function Check(){
-      SendString(JSON.stringify(GetBaseJsonPacket(2,uid)));
-    }
     window.onload=start;

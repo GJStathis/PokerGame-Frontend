@@ -1,29 +1,50 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-  <title>Poly-Poker</title>\
+  <title>Poly-Poker</title>
   <script src="app.js"></script>
   <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="main.css">
+  <link rel="stylesheet" type="text/css" href="table.css">
 </head>
 
 <body>
-<div class="container-fluid">
-<div id="splash-box">
-<div class="conatiner" id="splash-items">
-  <h1 id="splash">Poker with friends</h1>
-  <button id="bidButton" class="text-center" onClick="Bid()">Bid</button>
-  <button id="foldButton" class="text-center" onClick="Fold()">Fold</button>
-  <button id="callButton" class="text-center" onClick="Call()">Call</button>
-  <input id="bidAmount" type="text" Value ="10"></input>
-</div>
-  <!--<button type="button" class="btn btn-success text-center btn-lg" id="login">Login</button>-->
-</div>
+  <button id="logintest" class="btn btn-primary">Login</button>
+<div id="playerarea">
+  <div id="playercards">
+    <img class="playercard" id="card1" src="card-assets/2C.png">
+    <img class="playercard" id="card2" src="card-assets/2S.png">
+  </div>
+  <div id="playerchips">
+    <p>Total Chips: <span id="totalplayerchips">__</span></p>
+  </div>
 </div>
 
+<div id="playercontrol" class="btn-group-vertical">
+  <h4 class="text-center">Active player controls</h4>
+  <div class="row">
+    <div class="col">
+        <button id="bidButton" class="btn btn-success">Bid</button>
+    </div>
+    <div class="col">
+        <input id="bidAmount" type="text" size="15" Value ="Enter bid amount"></input>
+    </div>
+</div>
+  <button id="checkButton" class="btn btn-info">Check</button>
+  <button id="foldButton" class="btn btn-danger">Fold</button>
+</div>
 
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
+
+<!--
+<div class="conatiner" id="splash-items">
+  <button id="bidButton" class="text-center">Login !</button>
+  <button id="foldButton" class="text-center">Login !</button>
+  <button id="callButton" class="text-center">Login !</button>
+  <input id="bidAmount" type="text">Login !</input>
+  <button id="exitButton" class="text-center">Login !</button>
+</div>
+-->
