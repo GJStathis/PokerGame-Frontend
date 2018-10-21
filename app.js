@@ -1,6 +1,11 @@
 var start = function () {
     var playercard1 = document.getElementById('card1');
     var playercard2 = document.getElementById('card2');
+    var dealercard1 = document.getElementById('dcard1');
+    var dealercard2 = document.getElementById('dcard2');
+    var dealercard3 = document.getElementById('dcard3');
+    var dealercard4 = document.getElementById('dcard4');
+    var dealercard5 = document.getElementById('dcard5');
     var wsImpl = window.WebSocket || window.MozWebSocket;
     var playerchipfield = document.getElementById('totalplayerchips');
     var input = document.getElementById('sendText');

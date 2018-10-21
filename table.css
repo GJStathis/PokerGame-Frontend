@@ -4,7 +4,7 @@ body {
 
 #playerarea {
   position: fixed;
-  left:39%;
+  left:45%;
   bottom: 0px;
   height: 200px;
   width: auto;
@@ -30,6 +30,13 @@ body {
   max-width: auto;
 }
 
+.dealercard {
+  max-height: 97%;
+  max-width: auto;
+  padding: 15px;
+  padding-left: 60px;
+}
+
 #playercontrol {
   background: #773e35;
   margin: 15px;
@@ -38,4 +45,41 @@ body {
   position: fixed;
   bottom: 0px;
   right: 0px;
+}
+
+#playerleft {
+  width: 150px;
+  height: 75px;
+  background: white;
+  position: absolute;
+  top: 45%;
+}
+
+#playertop {
+  width: 150px;
+  height: 75px;
+  background: white;
+  position: absolute;
+  left: 45%;
+  top: 0px;
+}
+
+#playerright {
+  width: 150px;
+  height: 75px;
+  background: white;
+  position: absolute;
+  top: 45%;
+  right: 0px;
+}
+
+#dealerarea {
+  background: black;
+  height: 200px;
+  width: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%) };
 }
