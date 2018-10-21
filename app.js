@@ -2,6 +2,7 @@
 var uid = -1;
     var turnFlag = true;
 var start = function () {
+
     var playercard1 = document.getElementById('card1');
     var playercard2 = document.getElementById('card2');
     var dealercards = document.getElementById('dealerarea');
@@ -70,13 +71,17 @@ var start = function () {
         console.log('You are no longer the active player');
       }
       break;
+      case 5:
+        var newpotamnt = json['NewPotAmount'];
+        console.log("Pot amount has been updated to " + newpotamnt);
+        document.getElementById("potmoney").innerHTML = newpotamnt;
       case 6:
         if(uid == json['WinnerIds'])
           alert("you won");
         else
           alert(json['WinnerIds']+" won");
       break;
-    }
+      }
         };
 
         // when the connection is established, this method is called
