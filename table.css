@@ -55,6 +55,12 @@ body {
   top: 45%;
 }
 
+#pottotal {
+  top:31%;
+  left:26%;
+  position: absolute;
+}
+
 #playertop {
   width: 150px;
   height: 75px;

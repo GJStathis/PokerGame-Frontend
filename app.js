@@ -1,4 +1,5 @@
 var start = function () {
+
     var playercard1 = document.getElementById('card1');
     var playercard2 = document.getElementById('card2');
     var dealercard1 = document.getElementById('dcard1');
@@ -51,6 +52,7 @@ var start = function () {
       console.log('Board');
       for (var i = 0; i < ranks.length; i++)
         console.log(ranks[i] + suits[i]);
+
       break;
       case 3: // Add new card
       console.log(json['Rank'] + json['Suit']);
@@ -67,6 +69,10 @@ var start = function () {
         console.log('You are no longer the active player');
       }
       break;
+      case 5:
+          var newpotamnt = json['NewPotAmount'];
+          console.log("Pot amount has been updated to " + newpotamnt);
+          document.getElementById("potmoney").innerHTML = newpotamnt;
     }
         };
 
