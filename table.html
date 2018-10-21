@@ -1,7 +1,8 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-  <title>Poly-Poker</title>
+  <title>Poly-Poker</title>\
+  <script src="app.js"></script>
   <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="main.css">
 </head>
@@ -11,11 +12,10 @@
 <div id="splash-box">
 <div class="conatiner" id="splash-items">
   <h1 id="splash">Poker with friends</h1>
-  <button id="bidButton" class="text-center">Login !</button>
-  <button id="foldButton" class="text-center">Login !</button>
-  <button id="callButton" class="text-center">Login !</button>
-  <input id="bidAmount" type="text">Login !</input>
-  <button id="exitButton" class="text-center">Login !</button>
+  <button id="bidButton" class="text-center" onClick="Bid()">Bid</button>
+  <button id="foldButton" class="text-center" onClick="Fold()">Fold</button>
+  <button id="callButton" class="text-center" onClick="Call()">Call</button>
+  <input id="bidAmount" type="text" Value ="10"></input>
 </div>
   <!--<button type="button" class="btn btn-success text-center btn-lg" id="login">Login</button>-->
 </div>
@@ -24,7 +24,6 @@
 
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script src="app.js"></script>
 <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 </body>
 </html>

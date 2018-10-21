@@ -1,23 +1,20 @@
-var start = function () {
-    var inc = document.getElementById('incomming');
+var uid = -1;
+var start = function (){
     var wsImpl = window.WebSocket || window.MozWebSocket;
-    var input = document.getElementById('');
     var enc = new TextEncoder(); // always utf-8
 
-    inc.innerHTML += "connecting to server ..<br/>";
     // create a new websocket and connect
-    window.ws = new wsImpl('ws://localhost:9000/');
+    window.ws = new wsImpl('ws://10.254.186.218:9000/');
     // when data is comming from the server, this metod is called
     ws.onmessage = function (evt) {
       var json = JSON.parse(evt.data);
       var packetId = json['PacketId'];
-      inc.innerHTML += 'Received packet ID ' + packetId + '<br\>';
+      //inc.innerHTML += 'Received packet ID ' + packetId + '<br\>';
       switch (packetId)
       {
         case 0:
-          //get uid
-        //inc.innerHTML += 'Your UID is ' + json['UserId'] +
-        //', login status code is ' + json['LoginStatus'] + '<br/>';
+          uid = json['UserId'];
+          console.log('UserID = ' + uid);
         break;
         case 1:
           //display two cards, num players and numer of chips
@@ -34,56 +31,38 @@ var start = function () {
     };
     // when the connection is established, this method is called
     ws.onopen = function () {
-      inc.innerHTML += '.. connection open<br/>';
+      console.log('.. connection open<br/>');
+      SendString(JSON.stringify(GetBaseJsonPacket(0,uid)));
     };
     // when the connection is closed, this method is called
     ws.onclose = function () {
-      inc.innerHTML += '.. connection closed<br/>';
+    }
+}
+
+    function GetBaseJsonPacket(type, payload=null){
+      var jsonPacket =  {"PacketID":type,"UserID":payload}
+      return jsonPacket;
     }
 
-    form.addEventListener('submit', function(e){
-      e.preventDefault();
-      var val = input.value;
-      var jsonMsg = JSON.stringify({'PacketId':0,'UserId':val});
-      console.log(jsonMsg);
-      ws.send(jsonMsg);
-      input.value = "";
-    });
-  }
+    function AddBetAmount(jsonPacket, bet){
+      jsonPacket["BetAmount"] = bet;
+      return jsonPacket;
+    }
 
-var buffer = new Uint8Array([0,255,0,4,5]).buffer;
-var exampleSocket = new WebSocket("ws://10.254.186.218:9000/");
+    function Fold() {
+      SendString(JSON.stringify(GetBaseJsonPacket(3,uid)));
+    }
 
-function SendString(str){
-  exampleSocket.send(str);
-}
+    function Bid() {
+      var input = document.getElementById('bidAmount');
+      SendString(JSON.stringify(GetBaseJsonPacket(1,uid)));
+    };
 
-function GetBaseJsonPacket(type, payload=null){
-  var jsonPacket =  {"PacketID":type,"UserID":payload}
-  return jsonPacket;
-}
+    function SendString(str){
+      ws.send(str);
+    }
 
-function AddBetAmount(jsonPacket, bet){
-  jsonPacket["BetAmount"] = bet;
-  return jsonPacket;
-}
-
-$("#loginButton").click(function() {
-
-});
-
-$("#foldButton").click(function() {
-  SendString(JSON.stringify(GetBaseJsonPacket(0,1234)));
-});
-
-$("#checkButton").click(function() {
-  SendString(JSON.stringify(GetBaseJsonPacket(0,1234)));
-});
-
-$("#foldButton").click(function() {
-  SendString(JSON.stringify(GetBaseJsonPacket(0,1234)));
-});
-
-$("#foldButton").click(function() {
-  SendString(JSON.stringify(GetBaseJsonPacket(0,1234)));
-});
+    function Call(){
+      SendString(JSON.stringify(GetBaseJsonPacket(2,uid)));
+    }
+    window.onload=start;
