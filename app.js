@@ -31,7 +31,6 @@ var start = function (){
     };
     // when the connection is established, this method is called
     ws.onopen = function () {
-      console.log('.. connection open<br/>');
       SendString(JSON.stringify(GetBaseJsonPacket(0,uid)));
     };
     // when the connection is closed, this method is called
@@ -40,7 +39,7 @@ var start = function (){
 }
 
     function GetBaseJsonPacket(type, payload=null){
-      var jsonPacket =  {"PacketID":type,"UserID":payload}
+      var jsonPacket =  {"PacketId":type,"UserId":payload}
       return jsonPacket;
     }
 
@@ -55,14 +54,14 @@ var start = function (){
 
     function Bid() {
       var input = document.getElementById('bidAmount');
-      SendString(JSON.stringify(GetBaseJsonPacket(1,uid)));
+      SendString(JSON.stringify(AddBetAmount(GetBaseJsonPacket(1,uid)),input));
     };
 
     function SendString(str){
       ws.send(str);
     }
 
-    function Call(){
+    function Check(){
       SendString(JSON.stringify(GetBaseJsonPacket(2,uid)));
     }
     window.onload=start;
